@@ -1,1 +1,21 @@
-{}
+{% extends 'base.html' %} {% block content %}
+<h1>Homework Overview</h1>
+<p class="lead">
+  Implement a full-text retrieval tool (i.e. search engine) for a set of text documents. In other words, your system will be able to perform document retrieval according to specified keyword(s) and display in an easily visualization way. Also, the tool is able to calculate the document statistics (such as number of characters, number of words, number of sentences(EOS), etc.) and to determine how many sentences in documents using smart method (for example, rule-based approach). Computer languages are not restrictive.
+</p>
+<div class="mb-3">
+  <label for="formFile" class="form-label">Upload XML file</label>
+  <input class="form-control" type="file" id="formFile">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Input text</label>
+  <textarea
+    class="form-control"
+    id="exampleFormControlTextarea1"
+    rows="3"
+  ></textarea>
+</div>
+<p class="lead">
+  <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Submit</a>
+</p>
+{% endblock %}
