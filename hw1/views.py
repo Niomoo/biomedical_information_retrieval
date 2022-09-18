@@ -1,9 +1,9 @@
-from cgitb import text
 from django.shortcuts import render
 from django.http import HttpResponse
 import os
-from xml.dom import minidom
+import xml.etree.ElementTree as ET
 import json
+from string import *
 
 # Create your views here.
 
@@ -95,8 +95,9 @@ def file_upload(request):
                     "content": content,
                 })
             elif extension == '.json':
+                content = jsonParser(path)
                 return render(request, 'index.html', {
-                    "content": str(extension),
+                    "content": content,
                 })
 
 def sitemap(file):
@@ -105,13 +106,18 @@ def sitemap(file):
     text = file_content.read()
     return text
 
-def XMLparser(file):
-    xmldoc = minidom.parse(file)
-    root = xmldoc.documentElement
-    info = root.getElementsByTagName('Affiliation')
-    content = []
-    for i in info:
-        node = i.firstChild.nodeType
-        print(node)
-        content.append(node)
+def XMLparser(xmlfile):
+    tree = ET.parse(xmlfile)
+    root = tree.getroot()
+    content = ''
+    print(root.iter('AbstractText'))
+    for info in root.iter('AbstractText'):
+        node = info.text
+        content += node
+    return content
+
+def jsonParser(jsonfile):
+    with open(jsonfile) as file:
+        data = json.loads(file.read())
+    content = data[0]['Text']
     return content
