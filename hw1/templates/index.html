@@ -4,14 +4,37 @@
 <p class="lead">
   Implement a full-text retrieval tool (i.e. search engine) for a set of text documents. In other words, your system will be able to perform document retrieval according to specified keyword(s) and display in an easily visualization way. Also, the tool is able to calculate the document statistics (such as number of characters, number of words, number of sentences(EOS), etc.) and to determine how many sentences in documents using smart method (for example, rule-based approach). Computer languages are not restrictive.
 </p>
-<form method="post" action="readFile" enctype="multipart/form-data">
-  {% csrf_token %}
-  <div class="input-group">
-    <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload file" name="files">
-    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Submit</button>
+<div class="bd-example">
+  <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Upload PubMed file</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" tabindex="-1">Upload twitter file</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+      <form method="post" action="fileUpload" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload file" name="files">
+          <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" value="upload">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+      <form method="post" action="fileUpload" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload file" name="files">
+          <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" value="upload">Submit</button>
+        </div>
+      </form>  
+    </div>
   </div>
-</form>
-{{content}}
+</div>
+{{ content }}
 {% comment %} <div class="mb-3">
   <label for="exampleFormControlTextarea1" class="form-label">Input text</label>
   <textarea

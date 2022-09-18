@@ -3,5 +3,5 @@ from hw1 import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('readFile', views.readFile, name='readFile'),
+    path('fileUpload', views.file_upload, name='fileUpload'),
 ]
