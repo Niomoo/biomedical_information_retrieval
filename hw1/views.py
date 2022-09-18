@@ -1,6 +1,9 @@
+from cgitb import text
 from django.shortcuts import render
 from django.http import HttpResponse
-import json, os
+import os
+from xml.dom import minidom
+import json
 
 # Create your views here.
 
@@ -79,12 +82,36 @@ def file_upload(request):
         file_obj = request.FILES.get('files')
         f_upload = Upload("media/upload", ext=['xml', 'json'])
         res = f_upload.load(file_obj)
+        path = f_upload.get_path()
         name, extension = os.path.splitext(file_obj.name)
         # 檔案上傳失敗，返回對應的提示資訊
         if isinstance(res, str):
             return HttpResponse(res)
         # 檔案成功上傳
         else:
-            return render(request, 'index.html', {
-                "content": str(name)+ ' ' + str(extension),
-            })
+            if extension == '.xml':
+                content = XMLparser(path)
+                return render(request, 'index.html', {
+                    "content": content,
+                })
+            elif extension == '.json':
+                return render(request, 'index.html', {
+                    "content": str(extension),
+                })
+
+def sitemap(file):
+    file_path = file
+    file_content = open(file_path, 'r')
+    text = file_content.read()
+    return text
+
+def XMLparser(file):
+    xmldoc = minidom.parse(file)
+    root = xmldoc.documentElement
+    info = root.getElementsByTagName('Affiliation')
+    content = []
+    for i in info:
+        node = i.firstChild.nodeType
+        print(node)
+        content.append(node)
+    return content
