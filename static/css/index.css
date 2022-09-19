@@ -13,6 +13,7 @@
     border-radius: 0.3em;
 }
 .statis {
+    background-color: orange;
     line-height: 2.2rem;
     margin-top: 0.5em;
     border-radius: 0.3em;
@@ -35,7 +36,7 @@
 }
 .searchword {
     color: white;
-    background-color: orange;
+    background-color: rgb(0, 132, 255);
 }
 .badge {
     text-shadow: none;

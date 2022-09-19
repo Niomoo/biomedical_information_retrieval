@@ -12,7 +12,7 @@ function search() {
         offset = index + 1;
     }
     console.log(indexArray);
-    alterText = text.replaceAll(pattern, "<span class='searchword'>"+pattern+"</span>");
+    alterText = text.replaceAll(pattern, "<span class='badge searchword'>"+pattern+"</span>");
 
     console.log(alterText);
     document.getElementById("targetText").innerHTML = alterText;
