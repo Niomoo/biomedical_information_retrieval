@@ -4,11 +4,14 @@ import os
 import xml.etree.ElementTree as ET
 import json
 from string import *
+import re
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {
+        'uploaded': False,
+    })
 
 class Upload:
 	# 驗證檔案大小、副檔名、是不是日期資料夾
@@ -92,11 +95,13 @@ def file_upload(request):
             if extension == '.xml':
                 content = XMLparser(path)
                 return render(request, 'index.html', {
+                    "uploaded": True,
                     "content": content,
                 })
             elif extension == '.json':
                 content = jsonParser(path)
                 return render(request, 'index.html', {
+                    "uploaded": True,
                     "content": content,
                 })
 
@@ -110,14 +115,36 @@ def XMLparser(xmlfile):
     tree = ET.parse(xmlfile)
     root = tree.getroot()
     content = ''
-    print(root.iter('AbstractText'))
     for info in root.iter('AbstractText'):
         node = info.text
         content += node
-    return content
+    words = countWords(content)
+    char = countChar(content)
+    return {
+        "text": content,
+        "words": words,
+        "chars": char,
+    }
 
 def jsonParser(jsonfile):
     with open(jsonfile) as file:
         data = json.loads(file.read())
     content = data[0]['Text']
-    return content
+    words = countWords(content)
+    char = countChar(content)
+    return {
+        "text": content,
+        "words": words,
+        "chars": char,
+    }
+
+def countWords(s):
+    words = s.split()
+    return len(words)
+
+def countChar(s):
+    charNum = 0
+    words = s.split()
+    for c in words:
+        charNum += len(c)
+    return charNum
