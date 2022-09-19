@@ -1,3 +1,4 @@
+from io import BytesIO
 from django.shortcuts import render
 from django.http import HttpResponse
 import os
@@ -5,6 +6,13 @@ import xml.etree.ElementTree as ET
 import json
 from string import *
 import re
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+from nltk.tokenize import sent_tokenize
+from nltk.corpus import stopwords
 
 # Create your views here.
 
@@ -105,11 +113,6 @@ def file_upload(request):
                     "content": content,
                 })
 
-def sitemap(file):
-    file_path = file
-    file_content = open(file_path, 'r')
-    text = file_content.read()
-    return text
 
 def XMLparser(xmlfile):
     tree = ET.parse(xmlfile)
@@ -120,22 +123,36 @@ def XMLparser(xmlfile):
         content += node
     words = countWords(content)
     char = countChar(content)
+    sent = countSent(content)
+    word_list = getWordList(content)
+    print(word_list)
+    drawWordCloud(content)
     return {
         "text": content,
         "words": words,
         "chars": char,
+        "sentences": sent,
+        "word_list": word_list,
     }
 
 def jsonParser(jsonfile):
     with open(jsonfile) as file:
         data = json.loads(file.read())
-    content = data[0]['Text']
+    content = ''
+    for text in data:
+        content += text['Text']
     words = countWords(content)
     char = countChar(content)
+    sent = countSent(content)
+    word_list = getWordList(content)
+    print(word_list)
+    drawWordCloud(content)
     return {
         "text": content,
         "words": words,
         "chars": char,
+        "sentences": sent,
+        "word_list": word_list,
     }
 
 def countWords(s):
@@ -148,3 +165,32 @@ def countChar(s):
     for c in words:
         charNum += len(c)
     return charNum
+
+def countSent(s):
+    sentenceNum = sent_tokenize(s)
+    return len(sentenceNum)
+
+def getWordList(s):
+    words_count = {}
+    word_list = s.split()
+    for word in word_list:
+        if(words_count.get(word) == None):
+            words_count[word] = 1
+        else:
+            words_count[word] += 1
+    common_word = sorted(words_count.items(), key=lambda x: x[1], reverse=True)[:5]
+    common_list = []
+    for key, value in common_word:
+        common_list.append(key)
+    return common_list
+
+def drawWordCloud(content):
+    wordCloud = WordCloud(width=1600, height=800, background_color=None, mode="RGBA").generate(content)
+    wordCloud.to_file("static/img/wordCloud.png")
+
+def searchKeyword(request, text, word):
+    if request.method == 'POST':
+        return render(request, 'index.html', {
+                    "uploaded": True,
+                    "content": text.concordance(word),
+                })

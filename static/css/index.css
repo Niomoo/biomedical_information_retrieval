@@ -1,0 +1,26 @@
+.container-wrapper{
+    overflow: auto;
+    width: 100%;
+    height: 44vh;
+}
+.container-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.title {
+    line-height: 2.2rem;
+    margin-top: 1em;
+}
+.statistics {
+    line-height: 1.8rem;
+    font-size: medium;
+    margin: 1rem auto 0.5rem auto;
+    background-color: #f8f9fa;
+    color: #198754;
+    border-radius: 1.5rem;
+}
+.wordcloud {
+    max-width: 85%;
+    height: auto;
+    margin: 1em auto;
+}
+

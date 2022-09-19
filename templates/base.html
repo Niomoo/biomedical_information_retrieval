@@ -12,10 +12,11 @@
     <!-- Custom styles for this template -->
     {% load static %}
     <link href="{%static 'css/cover.css' %}" rel="stylesheet">
+    <link href="{%static 'css/index.css' %}" rel="stylesheet">
   </head>
   <body class="d-flex h-100 text-center text-bg-dark">  
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="mb-auto">
+      <header>
         <div>
           <h3 class="float-md-start mb-0">Biomedical Information Retrieval</h3>
           <nav class="nav nav-masthead justify-content-center float-md-end">
@@ -28,12 +29,12 @@
         </div>
       </header>
 
-      <main class="px-3">
+      <main class="px-3" style="margin: auto;">
       {% block content %}
 
       {% endblock %}
       </main>
-      <footer class="mt-auto text-white-50">
+      <footer class="text-white-50 position-absolute bottom-0 start-50 translate-middle-x">
         <hr>
         <p>© Jenny Liu</p>
       </footer>
