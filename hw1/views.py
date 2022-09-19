@@ -187,10 +187,3 @@ def getWordList(s):
 def drawWordCloud(content):
     wordCloud = WordCloud(width=1600, height=800, background_color=None, mode="RGBA").generate(content)
     wordCloud.to_file("static/img/wordCloud.png")
-
-def searchKeyword(request, text, word):
-    if request.method == 'POST':
-        return render(request, 'index.html', {
-                    "uploaded": True,
-                    "content": text.concordance(word),
-                })

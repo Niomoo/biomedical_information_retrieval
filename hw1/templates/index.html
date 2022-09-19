@@ -4,11 +4,19 @@
   <a class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#overview" href="#overview" role="button" aria-expanded="true" aria-controls="overview">
     <h1>Homework Overview</h1>
   </a>
+  {% if uploaded == False %}
   <div class="collapse show" id="overview">
     <div class="lead">
       Implement a full-text retrieval tool (i.e. search engine) for a set of text documents. In other words, your system will be able to perform document retrieval according to specified keyword(s) and display in an easily visualization way. Also, the tool is able to calculate the document statistics (such as number of characters, number of words, number of sentences(EOS), etc.) and to determine how many sentences in documents using smart method (for example, rule-based approach). Computer languages are not restrictive.
     </div>
   </div>
+  {% else %}
+  <div class="collapse" id="overview">
+    <div class="lead">
+      Implement a full-text retrieval tool (i.e. search engine) for a set of text documents. In other words, your system will be able to perform document retrieval according to specified keyword(s) and display in an easily visualization way. Also, the tool is able to calculate the document statistics (such as number of characters, number of words, number of sentences(EOS), etc.) and to determine how many sentences in documents using smart method (for example, rule-based approach). Computer languages are not restrictive.
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% if uploaded == False %}
 <div class="w-100 pt-3">
@@ -42,22 +50,31 @@
   </div>
 </div>
 {% else %}
-<div>
+<div class="w-100">
+  <h4 class="bg-danger title">Parsing Result</h4>
     <div class="row ">
       <div class="col-10">
-        <h4 class="rounded-pill bg-primary title">Parsing Result</h4>
         <div class="container-wrapper">
           <div ="container position-relative bottom-0">
             <div>
               {% load static %}
               <img src="{%static 'img/wordCloud.png' %}" class="wordcloud" alt="Word Cloud">
             </div>
-            <p style="text-align: justify">{{ content.text }}</p>
+            <div class="p-4">
+              <form id="searchForm" action="javascript:search();"> 
+                <div class="input-group"> 
+                  <input type="text" id="searchItem" class="form-control" placeholder="keyword"> 
+                  <button id="go" class="btn btn-outline-secondary" type="button" onclick="document.getElementById('searchForm').submit(); return false;">Search</button> 
+                </div> 
+              </form>
+              {% comment %} <input type="text" placeholder="Search keyword" id="search"> {% endcomment %}
+            </div>
+            <p id="targetText" style="text-align: justify">{{ content.text }}</p>
           </div>
         </div>
       </div>
       <div class="col-2">
-        <h4 class="rounded-pill bg-success title">Statistics</h4>
+        <h4 class="bg-warning statis">Statistics</h4>
         <p class="statistics">Words count</p>
         <p>{{ content.words }}</p>
         <p class="statistics">Characters count</p>
@@ -65,20 +82,10 @@
         <p class="statistics">Sentences count</p>
         <p>{{ content.sentences }}</p>
         {% for word in content.word_list %}
-          <span class="badge text-bg-secondary">{{ word }}</span>
+          <span class="badge text-bg-success">{{ word }}</span>
         {% endfor%}
       </div>
     </div>
-  <div class="pt-2">
-    <form method="post" action="fileUpload" enctype="multipart/form-data">
-      <input type="hidden" name="content" value="{{ content.text }}"></input>
-      <div class="input-group mb-3">
-        <span class="input-group-text">Search</span>
-        <input type="text" class="form-control" placeholder="keyword" aria-label="keyword" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Submit</button>
-      </div>
-    </form>
-  </div>
 </div>
 {% endif %}
 {% endblock %}
