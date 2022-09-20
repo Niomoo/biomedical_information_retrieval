@@ -125,7 +125,6 @@ def XMLparser(xmlfile):
     char = countChar(content)
     sent = countSent(content)
     word_list = getWordList(content)
-    print(word_list)
     drawWordCloud(content)
     return {
         "text": content,
@@ -145,7 +144,6 @@ def jsonParser(jsonfile):
     char = countChar(content)
     sent = countSent(content)
     word_list = getWordList(content)
-    print(word_list)
     drawWordCloud(content)
     return {
         "text": content,
@@ -181,7 +179,7 @@ def getWordList(s):
     common_word = sorted(words_count.items(), key=lambda x: x[1], reverse=True)[:5]
     common_list = []
     for key, value in common_word:
-        common_list.append(key)
+        common_list.append({"key": key, "value": value})
     return common_list
 
 def drawWordCloud(content):

@@ -81,7 +81,13 @@
         <p class="statistics">Sentences count</p>
         <p>{{ content.sentences }}</p>
         {% for word in content.word_list %}
-          <span class="badge text-bg-success">{{ word }}</span>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltip on bottom">
+            {{ word.key }}
+          </button>
+          {% comment %} <span type="button" class="badge text-bg-success" data-toggle="tooltip" data-placement="bottom" tabindex="0" title="{{ word.key }}">
+            <span class="badge text-bg-success">{{ word.key }}</span>
+              {{ word.key }}
+          </span> {% endcomment %}
         {% endfor%}
       </div>
     </div>
