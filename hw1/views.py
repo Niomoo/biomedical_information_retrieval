@@ -1,13 +1,11 @@
-from io import BytesIO
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 import os
 import xml.etree.ElementTree as ET
 import json
 from string import *
-import re
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -97,7 +95,8 @@ def file_upload(request):
         name, extension = os.path.splitext(file_obj.name)
         # 檔案上傳失敗，返回對應的提示資訊
         if isinstance(res, str):
-            return HttpResponse(res)
+            messages.error(request, res)
+            return redirect('index')
         # 檔案成功上傳
         else:
             if extension == '.xml':
