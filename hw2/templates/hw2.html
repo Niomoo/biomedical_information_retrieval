@@ -11,8 +11,8 @@
     </div>
   </div>
 </div>
-{% if search == False %}
 <div class="w-100">
+  {% if search == False %}
   <h4 class="bg-danger title">Zipf Distribution with/without using Porter Algorithm</h4>
   <div class="container-wrapper">
     <div class="container position-relative bottom-0 mt-1 text-center figure rounded">
@@ -23,14 +23,65 @@
         <div class="col my-2"><img src="{%static 'img/pubMed_porter.png'%}" class="rounded distribution" alt="..."></div>
         <div class="col my-2"><img src="{%static 'img/twitter_porter.png'%}" class="rounded distribution" alt="..."></div>
       </div>
+      <div class="row">
+        <table class="table col">
+          <thead>
+            <tr>
+              <th scope="col">PubMed</th>
+              <th scope="col">Word</th>
+              <th scope="col">Counts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key, value in pubmed %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ key }}</td>
+              <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <table class="table col">
+          <thead>
+            <tr>
+              <th scope="col">Twitter</th>
+              <th scope="col">Word</th>
+              <th scope="col">Counts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key, value in tweet %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ key }}</td>
+              <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="btn-div mt-3">
-    <button type="button" class="btn btn-primary mx-1">Search for PubMed</button>
-    <button type="button" class="btn btn-success mx-1">Search for Twitter</button>
+    <a role="button" class="btn btn-primary mx-1" href="searchPubMed">Search for PubMed</a>
+    <a role="button" class="btn btn-success mx-1" href="searchTwitter">Search for Twitter</a>
   </div>
+  {% else %}
+  <h4 class="bg-danger title">Article Content</h4>
+  <div class="container-wrapper">
+    <div class="container position-relative bottom-0 mt-1 text-center rounded">
+      <div class="p-2" id="targetBox">
+        <form id="searchNearestForm" action="javascript:searchNearest();"> 
+          <div class="input-group"> 
+            <input type="text" id="searchNearestItem" class="form-control" placeholder="keyword"> 
+            <button id="go" class="btn btn-outline-secondary" type="button" onclick="document.getElementById('searchNearestForm').submit(); return false;">Search</button> 
+          </div> 
+        </form>
+      </div>
+      <samp id="targetNearestText" style="text-align: justify">{{ content }}</samp>
+    </div>
+  </div>
+  {% endif %}
 </div>
-{% else %}
-  {{ content }}
-{% endif %}
 {% endblock %}
