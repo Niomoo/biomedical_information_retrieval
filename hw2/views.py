@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-import xml.etree.ElementTree as ET
 import json
-import requests
-from metapub import PubMedFetcher
+from collections import Counter
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # Create your views here.
 def hw2(request):
@@ -11,23 +11,8 @@ def hw2(request):
     twitter = getTwitter()
     return render(request, 'hw2.html', {
         'uploaded': False,
+        'content': pubmed,
     })
-
-def getPubMed():
-    with open('hw2/data/pubmed/pubmed_data.json') as file:
-        data = json.loads(file.read())
-    content = ''
-    for text in data:
-        content += text
-    return content
-
-def getTwitter():
-    with open('hw2/data/tweets/tweet_data.json') as file:
-        data = json.loads(file.read())
-    content = ''
-    for text in data:
-        content += text['text']
-    return content
 
 def countWords(s):
     words = s.split()
