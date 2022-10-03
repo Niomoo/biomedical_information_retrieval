@@ -6,3 +6,5 @@ media/upload/
 .cache
 .config
 nltk_data/
+hw2/__pycache__/
+hw2/migrations/__pycache__/
