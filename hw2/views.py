@@ -7,36 +7,28 @@ from metapub import PubMedFetcher
 
 # Create your views here.
 def hw2(request):
-    content = getPubMedContent()
+    pubmed = getPubMed()
+    twitter = getTwitter()
     return render(request, 'hw2.html', {
         'uploaded': False,
-        "content": content,
     })
 
 def getPubMed():
-    db = "pubmed"
-    query = "monkeypox"
-    base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/'
-    url = base + "esearch.fcgi?db=" + db + "&term=" + query + "&retmode=json"+ "&reldate=360&datetype=pdat" + "&retmax=100" + "&usehistory=y"
-    re = requests.get(url)
-    result = re.text
-    data = json.loads(result)
-    idlist = data['esearchresult']['idlist']
-    string = ""
-    lastone = idlist[len(idlist) - 1]
-    for item in idlist:
-        if item == lastone:
-            string = string + item
-        else:
-            string = string + item + ","
-    return string
+    with open('hw2/data/pubmed/pubmed_data.json') as file:
+        data = json.loads(file.read())
+    content = ''
+    for text in data:
+        content += text
+    return content
 
-def getPubMedContent():
-    keyword = "Monkeypox"
-    fetch = PubMedFetcher()
-    pmids = fetch.pmids_for_query(keyword, retmax=5000)
-    abstracts = {}
-    for pmid in pmids:
-        abstracts[pmid] = fetch.article_by_pmid(pmid).abstract
-    print(abstracts)
-    return abstracts
+def getTwitter():
+    with open('hw2/data/tweets/tweet_data.json') as file:
+        data = json.loads(file.read())
+    content = ''
+    for text in data:
+        content += text['text']
+    return content
+
+def countWords(s):
+    words = s.split()
+    return len(words)
