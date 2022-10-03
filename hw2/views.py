@@ -7,13 +7,15 @@ import pandas as pd
 
 # Create your views here.
 def hw2(request):
-    pubmed = getPubMed()
-    twitter = getTwitter()
     return render(request, 'hw2.html', {
-        'uploaded': False,
-        'content': pubmed,
+        'search': False,
     })
 
-def countWords(s):
-    words = s.split()
-    return len(words)
+def searchPubMed(request):
+    with open('data/pubmed/pubmed_data.json') as file:
+        data = json.loads(file.read())
+    content = data[0]
+    return render(request, 'hw2.html', {
+        'search': True,
+        'content': content,
+    })

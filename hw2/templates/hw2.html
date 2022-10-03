@@ -1,25 +1,36 @@
 {% extends 'base.html' %} 
 {% block content %}
-<div class="overview py-2">
-  <a class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#overview" href="#overview" role="button" aria-expanded="true" aria-controls="overview">
+<div class="overview pt-1">
+  <a class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#overview" href="#overview" role="button" aria-expanded="false" aria-controls="overview">
     <h1>Homework Overview</h1>
   </a>
-  {% if uploaded == False %}
-  <div class="collapse show" id="overview">
+  <div class="collapse" id="overview">
     <div class="lead">
       <p>First of all, implement the Zipf Distribution computation (or frequency spectrum for terms) for both a set of text documents from PubMed (and Tweeter as control group) with same subject. The size of text document sets could range from 10 to 50000, depends on your intention. You have to preprocess the text index (token) set from document collection. Secondly, implement the Porter’s algorithm as a functional module on your own software platform for the same set of text documents. Then, compare the difference.</p> 
       <p>In this project, basically your system or software platform will be able to compute text distribution from a set of documents. Match (or partial matching) process can be done using the dynamic programming-based Edit distance computation. Your retrieval results can be displayed in a format of indicating the location(s) and/or partial matching of the query keywords in each document, etc. Computer languages are not limited.</p>
     </div>
   </div>
-  {% else %}
-  <div class="collapse" id="overview">
-    <div class="lead">
-      Implement a full-text retrieval tool (i.e. search engine) for a set of text documents. In other words, your system will be able to perform document retrieval according to specified keyword(s) and display in an easily visualization way. Also, the tool is able to calculate the document statistics (such as number of characters, number of words, number of sentences(EOS), etc.) and to determine how many sentences in documents using smart method (for example, rule-based approach). Computer languages are not restrictive.
+</div>
+{% if search == False %}
+<div class="w-100">
+  <h4 class="bg-danger title">Zipf Distribution with/without using Porter Algorithm</h4>
+  <div class="container-wrapper">
+    <div class="container position-relative bottom-0 mt-1 text-center figure rounded">
+      {% load static %}
+      <div class="row row-cols-2">
+        <div class="col my-2"><img src="{%static 'img/pubMed_zipf.png'%}" class="rounded distribution" alt="..."></div>
+        <div class="col my-2"><img src="{%static 'img/twitter_zipf.png'%}" class="rounded distribution" alt="..."></div>
+        <div class="col my-2"><img src="{%static 'img/pubMed_porter.png'%}" class="rounded distribution" alt="..."></div>
+        <div class="col my-2"><img src="{%static 'img/twitter_porter.png'%}" class="rounded distribution" alt="..."></div>
+      </div>
     </div>
   </div>
-  {% endif %}
+  <div class="btn-div mt-3">
+    <button type="button" class="btn btn-primary mx-1">Search for PubMed</button>
+    <button type="button" class="btn btn-success mx-1">Search for Twitter</button>
+  </div>
 </div>
-<div>
+{% else %}
   {{ content }}
-</div>
+{% endif %}
 {% endblock %}

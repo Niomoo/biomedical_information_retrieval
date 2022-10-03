@@ -7,8 +7,8 @@ import json
 from string import *
 from wordcloud import WordCloud
 import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
+# nltk.download('punkt')
+# nltk.download('stopwords')
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
 

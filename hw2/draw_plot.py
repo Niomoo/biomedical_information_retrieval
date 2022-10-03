@@ -3,13 +3,29 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import json
 import numpy as np
+from porter import PorterStemmer
 
 def getWordList(content):
     words = Counter(content.split())
     top_words = words.most_common()
     return top_words
 
-def drawZipf(frequency):
+def getPorterStemming(content):
+    words = Counter(content.split())
+    ps = PorterStemmer()
+    stem_word = []
+    for word in words:
+        stem_word.append(ps.stem(word))
+    words_count = {}
+    for word in stem_word:
+        if(words_count.get(word) == None):
+            words_count[word] = 1
+        else:
+            words_count[word] += 1
+    common_word = sorted(words_count.items(), key=lambda x: x[1], reverse=True)
+    return common_word
+
+def list_to_df(frequency):
     zipf_table = []
     top_frequency = frequency[0][1]
     for index, item in enumerate(frequency, start=1):
@@ -28,24 +44,48 @@ def drawZipf(frequency):
     return df
 
 def drawPubMedZipf(df):
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,8))
     plt.plot(df['word'][:50], df['actual_frequency'][:50], color='red')
     plt.bar(df['word'][:50], df['actual_frequency'][:50], align='center', alpha=0.5)
     plt.xticks(df['word'][:50],rotation='vertical')
     plt.ylabel('Frequency')
     plt.xlabel('Top 50 tokens')
     plt.title('Top 50 tokens in PubMed')
+    plt.tight_layout()
     plt.savefig('../static/img/pubMed_zipf.png')
 
+def drawPubMedPorter(df):
+    plt.figure(figsize=(12,8))
+    plt.plot(df['word'][:50], df['actual_frequency'][:50], color='red')
+    plt.bar(df['word'][:50], df['actual_frequency'][:50], align='center', alpha=0.5)
+    plt.xticks(df['word'][:50],rotation='vertical')
+    plt.ylabel('Frequency')
+    plt.xlabel('Top 50 tokens')
+    plt.title('Top 50 tokens in PubMed using Porter Algorithm')
+    plt.tight_layout()
+    plt.savefig('../static/img/pubMed_porter.png')
+
 def drawTwitterZipf(df):
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,8))
     plt.plot(df['word'][:50], df['actual_frequency'][:50], color='red')
     plt.bar(df['word'][:50], df['actual_frequency'][:50], align='center', alpha=0.5)
     plt.xticks(df['word'][:50],rotation='vertical')
     plt.ylabel('Frequency')
     plt.xlabel('Top 50 tokens')
     plt.title('Top 50 tokens in Twitter')
+    plt.tight_layout()
     plt.savefig('../static/img/twitter_zipf.png')
+
+def drawTwitterPorter(df):
+    plt.figure(figsize=(12,8))
+    plt.plot(df['word'][:50], df['actual_frequency'][:50], color='red')
+    plt.bar(df['word'][:50], df['actual_frequency'][:50], align='center', alpha=0.5)
+    plt.xticks(df['word'][:50],rotation='vertical')
+    plt.ylabel('Frequency')
+    plt.xlabel('Top 50 tokens')
+    plt.title('Top 50 tokens in Twitter using Porter Algorithm')
+    plt.tight_layout()
+    plt.savefig('../static/img/twitter_porter.png')
 
 with open('data/pubmed/pubmed_data.json') as file:
     data = json.loads(file.read())
@@ -53,8 +93,11 @@ with open('data/pubmed/pubmed_data.json') as file:
     for text in data:
         content += text
     top_word = getWordList(content)
-    df = drawZipf(top_word)
-    drawPubMedZipf(df)
+    stem_word = getPorterStemming(content)
+    zipf_df = list_to_df(top_word)
+    porter_df = list_to_df(stem_word)
+    drawPubMedZipf(zipf_df)
+    drawPubMedPorter(porter_df)
 
 with open('data/tweets/tweet_data.json') as file:
     data = json.loads(file.read())
@@ -62,5 +105,8 @@ with open('data/tweets/tweet_data.json') as file:
     for text in data:
         content += text['text']
     top_word = getWordList(content)
-    df = drawZipf(top_word)
-    drawTwitterZipf(df)
+    stem_word = getPorterStemming(content)
+    zipf_df = list_to_df(top_word)
+    porter_df = list_to_df(stem_word)
+    drawTwitterZipf(zipf_df)
+    drawTwitterPorter(porter_df)

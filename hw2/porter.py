@@ -8,7 +8,7 @@ class PorterStemmer:
     def isConsonant(self, word, i):
         letter = word[i]
         if self.isCons(letter):
-            if letter == 'y' and isCons(word[i-1]):
+            if letter == 'y' and self.isCons(word[i-1]):
                 return False
             else:
                 return True
@@ -16,7 +16,7 @@ class PorterStemmer:
             return False
 
     def isVowel(self, word, i):
-        return not(isConsonant(word, i))
+        return not(self.isConsonant(word, i))
 
     # *S
     def endsWith(self, stem, letter):
