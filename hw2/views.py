@@ -43,7 +43,7 @@ def getPubMedData():
         for text in data:
             content += text
     top_word = getWordList(content)
-    return top_word[:5]
+    return top_word[:10]
     
 def getTwitterData():
     with open('hw2/data/tweets/tweet_data.json') as file:
@@ -52,7 +52,7 @@ def getTwitterData():
         for text in data:
             content += text['text']
     top_word = getWordList(content)
-    return top_word[:5]
+    return top_word[:10]
 
 def getWordList(content):
     words = Counter(content.split())
