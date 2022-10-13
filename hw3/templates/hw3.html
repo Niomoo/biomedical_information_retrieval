@@ -1,0 +1,17 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="overview pt-0">
+  <a class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#overview" href="#overview" role="button" aria-expanded="false" aria-controls="overview">
+    <h1>Homework Overview</h1>
+  </a>
+  <div class="collapse" id="overview">
+    <div class="lead">
+      <p>Implement the Word Embedding Technique(word2vec) for a set of text documents from PubMed with same subject. The size of text document sets could range from 1000 to 10000, depends on your original intention. You have to preprocess the text set from document collection. In this project, you can choose one of the 2 basic computational models:</p> 
+      <ol class="text-start">
+        <li>Continuous Bag of Word (CBOW): use a window of word to predict the middle word</li>
+        <li>Skip-gram (SG): use a word to predict the surrounding ones in window. Window size is not limited. Computer languages are not limited.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}

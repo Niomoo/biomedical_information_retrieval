@@ -1,10 +1,12 @@
 BIR_project/settings.py
 BIR_project/__pycache__/
-hw1/__pycache__/
-hw1/migrations/__pycache__/
 media/upload/
 .cache
 .config
 nltk_data/
+hw1/__pycache__/
+hw1/migrations/__pycache__/
 hw2/__pycache__/
 hw2/migrations/__pycache__/
+hw3/__pycache__/
+hw3/migrations/__pycache__/
