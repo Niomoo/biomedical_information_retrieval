@@ -31,8 +31,8 @@ path2 = 'data/pubmed_data_5000.txt'
 path3 = 'data/pubmed_data_10000.txt'
 
 train_model(path1, 0, 'model/cbow_1000.model')
-train_model(path1, 1, 'model/skip_gram_1000.model')
+train_model(path1, 1, 'model/skipgram_1000.model')
 train_model(path2, 0, 'model/cbow_5000.model')
-train_model(path2, 1, 'model/skip_gram_5000.model')
+train_model(path2, 1, 'model/skipgram_5000.model')
 train_model(path3, 0, 'model/cbow_10000.model')
-train_model(path3, 1, 'model/skip_gram_10000.model')
+train_model(path3, 1, 'model/skipgram_10000.model')

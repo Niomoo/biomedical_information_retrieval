@@ -1,11 +1,13 @@
 from Bio import Entrez
+from nltk.corpus import stopwords
+from nltk import word_tokenize
 import json
 
 def search(query):
     Entrez.email = 'jennyliu.lyh@iir.csie.ncku.edu.tw'
     handle = Entrez.esearch(db='pubmed', 
                             sort='relevance', 
-                            retmax='10000',
+                            retmax='1000',
                             retmode='xml', 
                             term=query)
     results = Entrez.read(handle)
@@ -24,13 +26,17 @@ results = search('breast cancer')
 id_list = results['IdList']
 papers = fetch_details(id_list)
 abstractText = []
+nltk_stopwords = set(stopwords.words('english'))
+nltk_stopwords.update(['.', ',', ':', ';', '(', ')', '#', '--', '...', '"'])
 for i, paper in enumerate(papers['PubmedArticle']):
     if 'Abstract' in paper['MedlineCitation']['Article']:
         content = ''
         for text in paper['MedlineCitation']['Article']['Abstract']['AbstractText']:
-            content += text
+            for word in word_tokenize(text):
+                if word not in nltk_stopwords:
+                    content = content + word + ' '
         abstractText.append(content)
 
-with open('pubmed_data_10000.json', 'w') as f:
+with open('data/pubmed_data_1000.json', 'w') as f:
     json.dump(abstractText, f, indent=2)
     # print("{}) {}".format(i+1, paper['MedlineCitation']['Article']['ArticleTitle']))

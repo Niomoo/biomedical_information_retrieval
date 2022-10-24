@@ -13,5 +13,15 @@
       </ol>
     </div>
   </div>
+  <div class="p-4">
+    <form method="post" action="getSimilar" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="input-group"> 
+        <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 
+        <button class="btn btn-outline-secondary" type="submit">Search</button> 
+      </div> 
+    </form>
+  </div>
+  {{ content }}
 </div>
 {% endblock %}
