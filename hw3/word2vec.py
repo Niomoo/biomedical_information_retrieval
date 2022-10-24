@@ -2,7 +2,7 @@ from gensim.models import word2vec
 import json
 
 # Settings
-seed = 666
+seed = 1
 sg = 0      # 0 for CBOW, 1 for skip-gram
 window_size = 10
 vector_size = 100

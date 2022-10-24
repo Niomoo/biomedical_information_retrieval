@@ -13,7 +13,14 @@
       </ol>
     </div>
   </div>
-  <div class="p-4">
+</div>
+<div class="w-100">
+  {% if search == False %}
+  <h4 class="bg-danger title">Subject: cancer</h4>
+  {% else %}
+  <h4 class="bg-danger title">Subject: {{ subject }}</h4>
+  {% endif %}
+  <div class="p-2">
     <form method="post" action="getSimilar" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="input-group"> 
@@ -22,6 +29,146 @@
       </div> 
     </form>
   </div>
-  {{ content }}
+  <div class="container-wrapper">
+    <div class="container position-relative bottom-0 mt-2 text-center figure rounded">
+      {% load static %}
+      {% if search == False %}
+      <div class="row">
+        <div class="col my-2"><img src="{%static 'img/CBOW.png'%}" class="rounded distribution" alt="..."></div>
+        <div class="col my-2"><img src="{%static 'img/Skip_gram.png'%}" class="rounded distribution" alt="..."></div>
+      </div>
+      {% endif %}
+      <div class="row">
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">CBOW in 1000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for key, value in cbow_1000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">CBOW in 5000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for key, value in cbow_5000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">CBOW in 10000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for key, value in cbow_10000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">Skip-gram in 1000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for key, value in skipgram_1000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">Skip-gram in 5000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for key, value in skipgram_5000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <table class="table table-hover caption-top">
+            <caption class="text-center">Skip-gram in 10000 articles</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">Similarity</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" class="table-group-divider">
+              {% for key, value in skipgram_10000 %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
