@@ -10,3 +10,5 @@ hw2/__pycache__/
 hw2/migrations/__pycache__/
 hw3/__pycache__/
 hw3/migrations/__pycache__/
+hw3/data/
+hw3/model/
