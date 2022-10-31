@@ -53,38 +53,46 @@ def train_model(word):
     plot_list2 = []
     for item in model1.wv.most_similar(word):
         item_list = list(item)
-        # plot_list.append(item_list[0])
+        plot_list.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         cbow_1000.append(item_tuple)
-    # visualization(model1, plot_list, 'CBOW')
+    visualization(model1, plot_list, 'CBOW_1000')
     for item in model2.wv.most_similar(word):
         item_list = list(item)
+        plot_list.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         skipgram_1000.append(item_tuple)
+    visualization(model2, plot_list, 'skipgram_1000')
     for item in model3.wv.most_similar(word):
         item_list = list(item)
+        plot_list.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         cbow_5000.append(item_tuple)
+    visualization(model3, plot_list, 'CBOW_5000')
     for item in model4.wv.most_similar(word):
         item_list = list(item)
-        # plot_list2.append(item_list[0])
+        plot_list2.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         skipgram_5000.append(item_tuple)
-    # visualization(model4, plot_list2, 'Skip_gram')
+    visualization(model4, plot_list2, 'skipgram_5000')
     for item in model5.wv.most_similar(word):
         item_list = list(item)
+        plot_list.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         cbow_10000.append(item_tuple)
+    visualization(model5, plot_list, 'CBOW_10000')
     for item in model6.wv.most_similar(word):
         item_list = list(item)
+        plot_list.append(item_list[0])
         item_list[1] = round(item_list[1], 5)
         item_tuple = tuple(item_list)
         skipgram_10000.append(item_tuple)  
+    visualization(model6, plot_list, 'skipgram_10000')
         
     return {
         'cbow_1000': cbow_1000,
@@ -101,7 +109,7 @@ def visualization(model, words, title):
         my_vocab[w] = model.wv.key_to_index[w]
     X = model.wv[my_vocab]
     twoDim = PCA().fit_transform(X)[:,:2]
-    plt.figure(figsize=(6,6))        
+    plt.figure(figsize=(5,5))        
     plt.title(title)
     plt.scatter(twoDim[:,0], twoDim[:,1], edgecolors='k', c='r')
     for word, (x,y) in zip(words, twoDim):
