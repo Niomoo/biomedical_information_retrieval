@@ -10,4 +10,20 @@
     </div>
   </div>
 </div>
+<div class="w-100">
+  {% if search == False %}
+  <h4 class="bg-danger title">Subject: cancer</h4>
+  {% else %}
+  <h4 class="bg-danger title">Subject: {{ subject }}</h4>
+  {% endif %}
+  <div class="p-2">
+    <form method="post" action="getSimilar" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="input-group"> 
+        <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 
+        <button class="btn btn-outline-secondary" type="submit">Search</button> 
+      </div> 
+    </form>
+  </div>
+</div>
 {% endblock %}

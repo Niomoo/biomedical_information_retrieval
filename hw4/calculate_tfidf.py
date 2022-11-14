@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from nltk.corpus import stopwords
 from nltk import word_tokenize
 from nltk.stem import PorterStemmer
@@ -6,6 +5,7 @@ from collections import Counter
 import numpy as np
 import json
 import re
+import math
 
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^a-z #+_]')
@@ -13,53 +13,11 @@ STOPWORDS = set(stopwords.words('english'))
 
 processed_title = []
 processed_text = []
+total_vocab = []
 
 DF = {}
 TF_IDF = {}
 TF_IDF_TITLE = {}
-
-# Create your views here.
-def hw4(request):
-    return render(request, 'hw4.html', {
-        'search': False,
-    })
-
-def get_ranking(request):
-    if request.method == 'POST':
-        word = request.POST.get('words')
-    cancer_file = 'data/cancer.json'
-    hemodialysis_file = 'data/hemodialysis.json'
-    N = process_text(cancer_file)
-    DF = calculate_df(N)
-    total_vocal = [x for x in DF]
-    calculate_dfidf(N)
-    calculate_dfidf_title(N)
-    merge_weight()
-
-
-#  below is the calculate function
-
-def match_score(query):
-    preprocessed_query = preprocess(query)
-    tokens = word_tokenize(str(preprocessed_query))
-    print("Matching Score")
-    print("\nQuery:", query)
-    print("")
-    print(tokens)
-    query_weights = {}
-    for key in TF_IDF:
-        if key[1] in tokens:
-            try:
-                query_weights[key[0]] += TF_IDF[key]
-            except:
-                query_weights[key[0]] = TF_IDF[key]
-    
-    query_weights = sorted(query_weights.items(), key=lambda x: x[1], reverse=True)
-    print("")
-    l = []
-    for i in query_weights[:10]:
-        l.append(i[0])
-    print(l)
 
 def text_prepare(text):
     lower = text.lower()
@@ -152,3 +110,88 @@ def merge_weight():
         TF_IDF[i] *= 0.3
     for i in TF_IDF_TITLE:
         TF_IDF[i] = TF_IDF_TITLE[i]
+
+def match_score(query):
+    preprocessed_query = preprocess(query)
+    tokens = word_tokenize(str(preprocessed_query))
+    print("Matching Score")
+    print("Query:", query)
+    print(tokens)
+    query_weights = {}
+    for key in TF_IDF:
+        if key[1] in tokens:
+            try:
+                query_weights[key[0]] += TF_IDF[key]
+            except:
+                query_weights[key[0]] = TF_IDF[key]   
+    query_weights = sorted(query_weights.items(), key=lambda x: x[1], reverse=True)
+    l = []
+    for i in query_weights[:10]:
+        l.append(i[0])
+    print(l)
+
+def cosine_sim(a, b):
+    cos_sim = np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b))
+    return cos_sim
+
+def vector_tfidf(total_vocab, total_vocab_size):
+    D = np.zeros((N, total_vocab_size))
+    for i in TF_IDF:
+        try:
+            ind = total_vocab.index(i[1])
+            D[i[0]][ind] = TF_IDF[i]
+        except:
+            pass
+    return D
+
+def gen_vector(tokens):
+    Q = np.zeros((len(total_vocab)))
+    counter = Counter(tokens)
+    words_count = len(tokens)
+    query_weights = {}
+    for token in np.unique(tokens):
+        tf = counter[token] / words_count
+        df = doc_freq(token)
+        idf = math.log((N + 1)/( df +1))
+        try:
+            ind = total_vocab.index(token)
+            Q[ind] = tf * idf
+        except:
+            pass
+    return Q
+
+def cosine_similarity(D, k, query):
+    print("Cosine Similarity")
+    preprocessed_query = preprocess(query)
+    tokens = word_tokenize(str(preprocessed_query))
+    print("Query:", query)
+    print(tokens)
+    d_cosines = []
+    query_vector = gen_vector(tokens)
+    for d in D:
+        d_cosines.append(cosine_sim(query_vector, d))   
+    out = np.array(d_cosines).argsort()[-k:][::-1]
+    print(out)
+
+def get_doc(filepath, id):
+    with open(filepath) as file:
+        jsondata = json.loads(file.read())
+        title = jsondata[id]['title']
+        content = jsondata[id]['content']
+        print("Title:", title)
+        print(content)
+
+cancer_file = 'data/cancer.json'
+hemodialysis_file = 'data/hemodialysis.json'
+N = process_text(cancer_file)
+DF = calculate_df(N)
+total_vocab = [x for x in DF]
+total_vocab_size = len(total_vocab)
+calculate_dfidf(N)
+calculate_dfidf_title(N)
+merge_weight()
+print(len(TF_IDF))
+match_score("Birth defects are established risk factors for childhood cancer.")
+D = vector_tfidf(total_vocab, total_vocab_size)
+cosine_similarity(D, 10, "Birth defects are established risk factors for childhood cancer.")
+get_doc(cancer_file, 7)

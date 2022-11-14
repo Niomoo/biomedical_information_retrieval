@@ -10,7 +10,6 @@ STOPWORDS = set(stopwords.words('english'))
 def text_prepare(text):
     """
         text: a string
-        
         return: modified initial string
     """
     # lowercase text
