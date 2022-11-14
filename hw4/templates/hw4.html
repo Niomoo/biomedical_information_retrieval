@@ -14,16 +14,18 @@
   {% if search == False %}
   <h4 class="bg-danger title">Select TF-IDF mthod</h4>
   <div class="p-2">
+    {% load static %}
+    <img src="{% static 'img/formula.png' %}" class="rounded" width="800px">
     <form method="post" action="get_ranking" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="input-group justify-content-center"> 
+      <div class="input-group my-3 justify-content-center"> 
         <div class="form-check">
           <input type="radio" class="btn-check" name="options" id="option1" value="1" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="option1">TF-IDF</label>
+          <label class="btn btn-outline-primary" for="option1">Method 1</label>
           <input type="radio" class="btn-check" name="options" id="option2" value="2" autocomplete="off">
-          <label class="btn btn-outline-primary" for="option2">Log Frequency weighting</label>
+          <label class="btn btn-outline-primary" for="option2">Method 2</label>
           <input type="radio" class="btn-check" name="options" id="option3" value="3" autocomplete="off">
-          <label class="btn btn-outline-primary" for="option3">Augmented Frequency weighting</label>
+          <label class="btn btn-outline-primary" for="option3">Method 3</label>
         </div>
         <div class="input-group my-3">
           <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 
@@ -39,11 +41,11 @@
       {% csrf_token %}
       <div class="form-check">
         <input type="radio" class="btn-check" name="options" id="option1" value="1" autocomplete="off" checked>
-        <label class="btn btn-outline-primary" for="option1">TF-IDF</label>
+        <label class="btn btn-outline-primary" for="option1">Method 1</label>
         <input type="radio" class="btn-check" name="options" id="option2" value="2" autocomplete="off">
-        <label class="btn btn-outline-primary" for="option2">Log Frequency weighting</label>
+        <label class="btn btn-outline-primary" for="option2">Method 2</label>
         <input type="radio" class="btn-check" name="options" id="option3" value="3" autocomplete="off">
-        <label class="btn btn-outline-primary" for="option3">Augmented Frequency weighting</label>
+        <label class="btn btn-outline-primary" for="option3">Method 3</label>
       </div>
       <div class="input-group my-3"> 
         <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 

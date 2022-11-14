@@ -87,15 +87,18 @@ def calculate_dfidf(method, num):
         counter = Counter(tokens + processed_title[i]) # 計算加入標題後字的數量
         words_count = len(tokens + processed_title[i]) # 加入標題後的總字數
         for token in np.unique(tokens):
-            tf = counter[token]  / words_count
             df = doc_freq(token)
-            if method == 1:     # log frequency
+            if method == 1:     # term frequency
+                tf = counter[token] / words_count
                 idf = np.log((num + 1) / (df + 1))
+                TF_IDF[doc, token] = tf * idf
             elif method == 2:   # frequency
-                idf = (num + 1) / (df + 1)
+                tf = counter[token]  / words_count
+                TF_IDF[doc, token] = np.log(1 + tf)
             elif method == 3:   # augmented frequency
-                idf = 0.5 + 0.5 * (num + 1) / (df + 1)/np.max((num + 1) / (df + 1))
-            TF_IDF[doc, token] = tf * idf
+                tf = 1 + np.log(counter[token] / words_count)
+                idf = np.log((num + 1) / (df + 1))
+                TF_IDF[doc, token] = tf * idf
         doc += 1
     return TF_IDF
 
