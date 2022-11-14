@@ -212,14 +212,16 @@ def get_doc(filepath, id_list, similarity):
 def get_ranking(request):
     if request.method == 'POST':
         word = request.POST.get('words')
+        option = request.POST.get('options')
+        method = int(option)
     all_article = 'hw4/data/all_articles.json'
     N = process_text(all_article)
     print(N)
     DF = calculate_df(N)
     total_vocab = [x for x in DF]
     total_vocab_size = len(total_vocab)
-    calculate_dfidf(3, N)
-    calculate_dfidf_title(3, N)
+    calculate_dfidf(method, N)
+    calculate_dfidf_title(method, N)
     merge_weight()
     # print(len(TF_IDF))
     match_score(word)
