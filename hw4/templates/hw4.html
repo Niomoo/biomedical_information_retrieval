@@ -12,12 +12,9 @@
 </div>
 <div class="w-100">
   {% if search == False %}
-  <h4 class="bg-danger title">Subject: cancer</h4>
-  {% else %}
-  <h4 class="bg-danger title">Subject: {{ subject }}</h4>
-  {% endif %}
+  <h4 class="bg-danger title">Search</h4>
   <div class="p-2">
-    <form method="post" action="getSimilar" enctype="multipart/form-data">
+    <form method="post" action="get_ranking" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="input-group"> 
         <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 
@@ -25,5 +22,43 @@
       </div> 
     </form>
   </div>
+  {% else %}
+  <h4 class="bg-danger title">Search: {{ query }}</h4>
+  <div class="p-2">
+    <form method="post" action="get_ranking" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="input-group"> 
+        <input type="text" id="searchWord" class="form-control" placeholder="keyword" name="words"> 
+        <button class="btn btn-outline-secondary" type="submit">Search</button> 
+      </div> 
+    </form>
+  </div>
+  <div class="container-wrapper">
+    <div class="container position-relative bottom-0 mt-2 rounded">
+      <div class="row p-0 justify-content-center">
+      {% for article in articles %}
+          <div class="card text-start text-bg-light mb-3 p-0" style="width: 70em;">
+            <div class="card-header text-bg-primary">{{ article.category }}</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <h6 class="card-subtitle my-2 lead">Similarity: {{ article.similarity }}</h6>
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading{{artible.PMID}}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{article.PMID}}" aria-expanded="false" aria-controls="flush-collapse{{article.PMID}}">
+                    Full article...
+                  </button>
+                </h2>
+                <div id="flush-collapse{{article.PMID}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{article.PMID}}" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">{{ article.content }}</div>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

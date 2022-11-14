@@ -134,8 +134,8 @@ def cosine_sim(a, b):
     cos_sim = np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b))
     return cos_sim
 
-def vector_tfidf(total_vocab, total_vocab_size):
-    D = np.zeros((N, total_vocab_size))
+def vector_tfidf(num, total_vocab, total_vocab_size):
+    D = np.zeros((num, total_vocab_size))
     for i in TF_IDF:
         try:
             ind = total_vocab.index(i[1])
@@ -144,7 +144,7 @@ def vector_tfidf(total_vocab, total_vocab_size):
             pass
     return D
 
-def gen_vector(tokens):
+def gen_vector(num, tokens):
     Q = np.zeros((len(total_vocab)))
     counter = Counter(tokens)
     words_count = len(tokens)
@@ -152,7 +152,7 @@ def gen_vector(tokens):
     for token in np.unique(tokens):
         tf = counter[token] / words_count
         df = doc_freq(token)
-        idf = math.log((N + 1)/( df +1))
+        idf = math.log((num + 1)/( df +1))
         try:
             ind = total_vocab.index(token)
             Q[ind] = tf * idf
@@ -160,30 +160,36 @@ def gen_vector(tokens):
             pass
     return Q
 
-def cosine_similarity(D, k, query):
+def cosine_similarity(D, num, query):
     print("Cosine Similarity")
     preprocessed_query = preprocess(query)
     tokens = word_tokenize(str(preprocessed_query))
     print("Query:", query)
     print(tokens)
     d_cosines = []
-    query_vector = gen_vector(tokens)
+    query_vector = gen_vector(num, tokens)
     for d in D:
         d_cosines.append(cosine_sim(query_vector, d))   
-    out = np.array(d_cosines).argsort()[-k:][::-1]
+    out = np.array(d_cosines).argsort()[-10:][::-1]
     print(out)
+    return out
 
-def get_doc(filepath, id):
+def get_doc(filepath, id_list):
     with open(filepath) as file:
         jsondata = json.loads(file.read())
-        title = jsondata[id]['title']
-        content = jsondata[id]['content']
-        print("Title:", title)
-        print(content)
+        article = []
+        for id in id_list:
+            data = jsondata[id]
+            print("Category:", data['category'])
+            # print(data)
+            article.append(data)
+        return article
+
 
 cancer_file = 'data/cancer.json'
 hemodialysis_file = 'data/hemodialysis.json'
-N = process_text(cancer_file)
+all_article = 'data/all_articles.json'
+N = process_text(all_article)
 DF = calculate_df(N)
 total_vocab = [x for x in DF]
 total_vocab_size = len(total_vocab)
@@ -191,7 +197,7 @@ calculate_dfidf(N)
 calculate_dfidf_title(N)
 merge_weight()
 print(len(TF_IDF))
-match_score("Birth defects are established risk factors for childhood cancer.")
-D = vector_tfidf(total_vocab, total_vocab_size)
-cosine_similarity(D, 10, "Birth defects are established risk factors for childhood cancer.")
-get_doc(cancer_file, 7)
+match_score("kidney")
+D = vector_tfidf(N, total_vocab, total_vocab_size)
+top_list = cosine_similarity(D, N, "kidney")
+get_doc(all_article, top_list)
