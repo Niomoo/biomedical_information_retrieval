@@ -235,4 +235,5 @@ def get_ranking(request):
         'search': True,
         'query': word,
         'articles': articles,
+        'method': method,
     })
